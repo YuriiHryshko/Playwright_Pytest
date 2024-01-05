@@ -22,8 +22,8 @@ class ContactUsPage():
         self.choose_file_input.set_input_files(file)
 
     def click_submit_btn(self):
-        self.page.once("dialog", lambda dialog: dialog.accept())
         self.submit_btn.click()
 
-
+    def click_browser_ok(self):
+        self.page.on("dialog", lambda dialog: dialog.accept())
 

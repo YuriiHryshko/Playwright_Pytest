@@ -4,18 +4,17 @@ from pages.home_page import HomePage
 from pages.products_page import ProductsPage
 from pages.product_details_page import ProductDetailsPage
 from data.data import Data
+from utils.tools import take_screenshot
 
 product_name = Data.product["name"]
 
 class TestProductsPage:
     @pytest.fixture
-    def test_setup(self, page):
-        self.page = page
-        self.page.set_viewport_size(viewport_size={'width': 1920, 'height': 1080})
+    def test_setup(self, new_page):
+        self.page = new_page
         self.home_page = HomePage(self.page)
         self.products_page = ProductsPage(self.page)
         self.product_details_page = ProductDetailsPage(self.page)
-        self.page.goto('https://automationexercise.com')
         assert self.page.title() == 'Automation Exercise'
 
         self.home_page.click_products_btn()
@@ -34,11 +33,15 @@ class TestProductsPage:
         assert self.product_details_page.product_condition.is_visible()
         assert self.product_details_page.product_brand.is_visible()
 
+        take_screenshot(self.page, "Verify All Products and product detail page")
+
     def test_search_product(self, test_setup):
         self.products_page.search_by_product_name(product_name)
         assert self.products_page.searched_products_title.is_visible()
 
         self.products_page.check_searched_results_by_name(product_name)
+
+        take_screenshot(self.page, "Search Product")
 
 
 

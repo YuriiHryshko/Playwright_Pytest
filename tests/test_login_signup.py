@@ -7,6 +7,7 @@ from pages.registration_page import RegistrationPage
 from pages.account_created_page import AccountCreatedPage
 from pages.delete_account_page import DeleteAccountPage
 from data.data import Data
+from utils.tools import take_screenshot
 
 name = Data.user["name"]
 email = Data.user["email"]
@@ -34,15 +35,13 @@ registered_name = Data.registered_user["name"]
 
 class TestLoginSignupPage:
     @pytest.fixture
-    def test_setup(self, page):
-        self.page = page
-        self.page.set_viewport_size(viewport_size={'width': 1920, 'height': 1080})
+    def test_setup(self, new_page):
+        self.page = new_page
         self.home_page = HomePage(self.page)
         self.login_signup_page = LoginSignupPage(self.page)
         self.registration_page = RegistrationPage(self.page)
         self.account_created_page = AccountCreatedPage(self.page)
         self.account_deleted_page = DeleteAccountPage(self.page)
-        self.page.goto('https://automationexercise.com')
         assert self.page.title() == 'Automation Exercise'
 
     def test_register_user(self, test_setup):
@@ -68,6 +67,8 @@ class TestLoginSignupPage:
         assert self.account_deleted_page.account_deleted_title.is_visible()
 
         self.account_deleted_page.click_continue_btn()
+
+        take_screenshot(self.page, "Register User")
     def test_login_user_with_correct_email_and_password(self, test_setup):
         self.home_page.click_login_btn()
         assert self.login_signup_page.login_form_header.is_visible()
@@ -79,6 +80,8 @@ class TestLoginSignupPage:
 
         #self.home_page.click_delete_account_btn()
         #assert self.account_deleted_page.account_deleted_title.is_visible()
+
+        take_screenshot(self.page, "Login User with correct email and password")
     def test_login_user_with_incorrect_email_and_password(self, test_setup):
         self.home_page.click_login_btn()
         assert self.login_signup_page.login_form_header.is_visible()
@@ -86,6 +89,8 @@ class TestLoginSignupPage:
         self.login_signup_page.fill_login_form(email, password)
         self.login_signup_page.click_login_btn()
         assert self.login_signup_page.login_form_error.is_visible()
+
+        take_screenshot(self.page, "Login User with incorrect email and password")
 
     def test_logout_user(self, test_setup):
         self.home_page.click_login_btn()
@@ -99,6 +104,8 @@ class TestLoginSignupPage:
         self.home_page.click_logout_btn()
         assert self.page.url == 'https://automationexercise.com/login'
 
+        take_screenshot(self.page, "Logout User")
+
     def test_register_user_with_existing_email(self, test_setup):
         self.home_page.click_login_btn()
         assert self.login_signup_page.signup_form_header.is_visible()
@@ -106,6 +113,8 @@ class TestLoginSignupPage:
         self.login_signup_page.fill_signup_form(name, registered_email)
         self.login_signup_page.click_signup_btn()
         assert self.login_signup_page.signup_form_error.is_visible()
+
+        take_screenshot(self.page, "Register User with existing email")
 
 
 
