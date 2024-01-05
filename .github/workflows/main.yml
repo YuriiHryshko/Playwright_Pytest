@@ -20,7 +20,7 @@ jobs:
           playwright install chromium
 
       - name: Run tests
-        run: pytest
+        run: pipenv run headless-default
 
       - name: Allure Report action from marketplace
         uses: simple-elf/allure-report-action@master

@@ -12,3 +12,6 @@ allure-pytest = "*"
 
 [requires]
 python_version = "3.12"
+
+[scripts]
+headless-default = "pytest --alluredir=./reports --clean-alluredir"
